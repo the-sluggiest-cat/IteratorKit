@@ -4,6 +4,7 @@
 	  <LangVersion>9.0</LangVersion>
 	<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 	<GenerateDocumentationFile>False</GenerateDocumentationFile>
+  <!-- pff; documentation file? what's that? just remember what you write lmao /j -->
 	<!-- <DocumentationFile>D:/rw_modding/IteratorMod/docs/docFile.xml</DocumentationFile> -->
   </PropertyGroup>
 
@@ -40,6 +41,8 @@
     </Reference>
   </ItemGroup>
 
+  <!-- for whatever reason, zsh doesn't like us trying to copy this to the rain world mods folder -->
+  <!-- this will slow down development a little, but i don't particularly care. im just glad it builds. -->
   <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent"> -->
     <!-- <Exec Command="cp $(TargetPath) /home/slugcat/.local/share/Steam/steamapps/common/Rain&#32;World/RainWorld_Data/StreamingAssets/mods/IteratorKit/plugins; cp $(TargetDir)IteratorKit.pdb /home/slugcat/.local/share/Steam/steamapps/common/Rain&#32;World/RainWorld_Data/StreamingAssets/mods/IteratorKit/plugins" /> -->
   <!-- </Target> -->

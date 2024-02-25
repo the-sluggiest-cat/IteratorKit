@@ -101,7 +101,7 @@ namespace IteratorKit.CMOracle
         /// Restricts what slugcats this oracle will spawn for
         /// </summary>
         [JsonProperty("for")]
-        private List<String> forSlugList = null;
+        private List<String> forSlugList = null; // keeps compiler quiet; base has these just to default values and msbuild hates that
 
         /// <exclude />
         public List<SlugcatStats.Name> forSlugcats
@@ -272,7 +272,7 @@ namespace IteratorKit.CMOracle
                 /// "for": ["Yellow", "Spear"]
                 /// </example>
                 [JsonProperty("for")]
-                private List<String> forSlugList = null;
+                private List<String> forSlugList = null; // same as past reference
 
                 /// <summary>
                 /// <see href="/eventsIds.html#dialog-creatures"/>
