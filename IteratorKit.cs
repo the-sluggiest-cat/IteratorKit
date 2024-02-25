@@ -54,25 +54,35 @@ namespace IteratorKit
             Logger = base.Logger;
             //PT's hello world
             Logger.LogInfo("...Hello, World? Is that how it goes?");
+            Logger.LogInfo("Regardless; OnEnable() has been hit. Here's what we're working with.");
 
+            Logger.LogInfo("SpawnOracle");
             On.Room.ReadyForAI += SpawnOracle;
 
+            Logger.LogInfo("CMOracle.ApplyHooks");
             CMOracle.CMOracle.ApplyHooks();
+            Logger.LogInfo("CMOverseer.ApplyHooks");
             CMOverseer.ApplyHooks();
 
+            Logger.LogInfo("AfterModsInit");
             On.RainWorld.PostModsInit += AfterModsInit;
+            Logger.LogInfo("OnRestartGame");
             On.RainWorldGame.RestartGame += OnRestartGame;
             
             SlugBase.SaveData.SaveDataHooks.Apply();
+            Logger.LogInfo("RawUpdate");
             On.RainWorldGame.RawUpdate += RainWorldGame_RawUpdate;
+            Logger.LogInfo("Update (cooked)");
             On.ShortcutHandler.Update += InformOfInvalidShortcutError;
 
+            Logger.LogInfo("SSOracleOverride.ApplyHooks");
             SSOracleOverride.ApplyHooks();
         }
 
 
         private void OnDisable()
         {
+            Logger.LogInfo("Bye bye.");
             On.Room.ReadyForAI -= SpawnOracle;
 
             CMOracle.CMOracle.RemoveHooks();
@@ -99,16 +109,16 @@ namespace IteratorKit
                 if (Input.GetKeyDown(KeyCode.Alpha0))
                 {
                     RainWorldGame.ForceSaveNewDenLocation(self, self.FirstAnyPlayer.Room.name, false);
-                    CMOracleDebugUI.ModWarningText($"Save file forced den location to {self.FirstAlivePlayer.Room.name}! Press \"R\" to reload.", self.rainWorld);
+                    CMOracleDebugUI.ModWarningText($"RainWorldGame_RawUpdate(): Save file forced den location to {self.FirstAlivePlayer.Room.name}! Press \"R\" to reload.", self.rainWorld);
                    ((StoryGameSession)self.session).saveState.deathPersistentSaveData.theMark = true;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha6))
                 {
                     Futile.atlasManager.LogAllElementNames();
-                    IteratorKit.Logger.LogInfo("Logging shader names");
+                    IteratorKit.Logger.LogInfo("RainWorldGame_RawUpdate(): Logging shader names");
                     foreach(KeyValuePair<string, FShader> shader in self.rainWorld.Shaders)
                     {
-                        IteratorKit.Logger.LogInfo(shader.Key);
+                        IteratorKit.Logger.LogInfo($"RainWorldGame_RawUpdate(): {shader.Key}");
                     }
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha9))
@@ -139,7 +149,7 @@ namespace IteratorKit
                         (oracle.oracleBehavior as CMOracleBehavior).SetHasHadMainPlayerConversation(false);
                     }
                     self.GetStorySession.saveState.progression.SaveWorldStateAndProgression(malnourished: false);
-                    CMOracleDebugUI.ModWarningText("Removed flag for HasHadMainPlayerConversation and saved game. Reload now.", self.rainWorld);
+                    CMOracleDebugUI.ModWarningText("RainWorldGame_RawUpdate(): Removed flag for HasHadMainPlayerConversation and saved game. Reload now.", self.rainWorld);
 
                 }
                 
@@ -173,14 +183,14 @@ namespace IteratorKit
                 {
                     if (Directory.Exists(mod.path + "/sprites"))
                     {
-                        IteratorKit.Logger.LogWarning("hunting for atlases in " + mod.path + "/sprites");
+                        IteratorKit.Logger.LogWarning("LoadOracleFiles(): hunting for atlases in " + mod.path + "/sprites");
                         foreach (string file in Directory.GetFiles(mod.path + "/sprites"))
                         {
                             IteratorKit.Logger.LogInfo(file);
                             
                             if (Path.GetFileName(file).StartsWith("oracle"))
                             {
-                                IteratorKit.Logger.LogWarning($"Loading atlas! sprites/{Path.GetFileNameWithoutExtension(file)}");
+                                IteratorKit.Logger.LogWarning($"LoadOracleFiles(): Loading atlas! sprites/{Path.GetFileNameWithoutExtension(file)}");
                                 Futile.atlasManager.LoadAtlas($"sprites/{Path.GetFileNameWithoutExtension(file)}");
                             }
                         }
@@ -209,10 +219,10 @@ namespace IteratorKit
                         {
                             if (!isDuringInit)
                             { // currently this text doesnt work as the screen isn't setup quite right.
-                                CMOracleDebugUI.ModWarningText($"Encountered an error while loading data file {file} from mod ${mod.name}.\n\n${e.Message}", rainWorld);
+                                CMOracleDebugUI.ModWarningText($"LoadOracleFiles(): Encountered an error while loading data file {file} from mod ${mod.name}.\n\n${e.Message}", rainWorld);
                             }
                             
-                            Logger.LogError("EXCEPTION");
+                            Logger.LogError("LoadOracleFiles(): EXCEPTION");
                             Logger.LogError(e.ToString());
                         }
                     }
@@ -222,7 +232,7 @@ namespace IteratorKit
             {
                 if (!isDuringInit)
                 { // currently this text doesnt work as the screen isn't setup quite right.
-                    CMOracleDebugUI.ModWarningText($"Encountered an error while loading oracle data.\n\n${e.Message}", rainWorld);
+                    CMOracleDebugUI.ModWarningText($"LoadOracleFiles(): Encountered an error while loading oracle data.\n\n${e.Message}", rainWorld);
                 }
                 Logger.LogError("EXCEPTION");
                 Logger.LogError(e.ToString());
@@ -244,15 +254,15 @@ namespace IteratorKit
                         slConvo.ApplyHooks();
                         break;
                     case "SS": // includes DM
-                        IteratorKit.Logger.LogInfo($"loading SS oracle data {file}");
+                        IteratorKit.Logger.LogInfo($"LoadOracleFile(): loading SS oracle data {file}");
                         SSOracleOverride.ssOracleJsonData.Add(oracleData);
                         break;
                     case "DM":
-                        IteratorKit.Logger.LogInfo($"loading DM oracle data {file}");
+                        IteratorKit.Logger.LogInfo($"LoadOracleFile(): loading DM oracle data {file}");
                         SSOracleOverride.ssOracleJsonData.Add(oracleData);
                         break;
                     default:
-                        IteratorKit.Logger.LogInfo($"loading custom oracle data {file}");
+                        IteratorKit.Logger.LogInfo($"LoadOracleFile(): loading custom oracle data {file}");
                         oracleJsonData.Add(oracleData);
                         oracleRoomIds.Add(oracleData.roomId);
                         break;
@@ -270,10 +280,10 @@ namespace IteratorKit
         {
             if (IteratorKit.debugMode)
             {
-                IteratorKit.Logger.LogInfo("Debug mode already enabled");
+                IteratorKit.Logger.LogInfo("EnableDebugMode(): Debug mode already enabled");
                 return;  
             }
-            IteratorKit.Logger.LogInfo("Iterator kit debug mode enabled");
+            IteratorKit.Logger.LogInfo("EnableDebugMode(): Iterator kit debug mode enabled");
             IteratorKit.debugMode = true;
             On.Menu.HoldButton.Update += HoldButton_Update;
             oracleDebugUI.EnableDebugUI(rainWorld, this);
@@ -317,7 +327,7 @@ namespace IteratorKit
 
                         if (oracleJson.forSlugcats.Contains(self.game.StoryCharacter))
                         {
-                            IteratorKit.Logger.LogWarning($"Found matching room, spawning oracle {oracleJson.id} ");
+                            IteratorKit.Logger.LogWarning($"SpawnOracle(): Found matching room, spawning oracle {oracleJson.id} ");
                             self.loadingProgress = 3;
                             self.readyForNonAICreaturesToEnter = true;
                             WorldCoordinate worldCoordinate = new WorldCoordinate(self.abstractRoom.index, 15, 15, -1);
@@ -335,7 +345,7 @@ namespace IteratorKit
                         }
                         else
                         {
-                            Logger.LogWarning($"{oracleJson.id} Oracle is not avalible for the current slugcat");
+                            Logger.LogWarning($"SpawnOracle(): {oracleJson.id} Oracle is not avalible for the current slugcat");
                         }
                     }
 
@@ -343,7 +353,7 @@ namespace IteratorKit
             }catch (Exception e)
             {
                 IteratorKit.Logger.LogError(e);
-                CMOracleDebugUI.ModWarningText($"Iterator Kit Initialization Error: {e}", self.game.rainWorld);
+                CMOracleDebugUI.ModWarningText($"SpawnOracle(): Iterator Kit Initialization Error: {e}", self.game.rainWorld);
                 
             }
 
@@ -364,14 +374,14 @@ namespace IteratorKit
 
         public static void LogVector2(Vector2 vector)
         {
-            Logger.LogInfo($"x: {vector.x} y: {vector.y}");
+            Logger.LogInfo($"LogVector2(): x: {vector.x} y: {vector.y}");
         }
 
         public void EncryptDialogFiles()
         {
             try
             {
-                IteratorKit.Logger.LogWarning("Encrypting all dialog files");
+                IteratorKit.Logger.LogWarning("EncryptDialogFiles(): Encrypting all dialog files");
                 foreach (ModManager.Mod mod in ModManager.ActiveMods)
                 {
                     string[] dirs = Directory.GetDirectories(mod.path);
@@ -379,7 +389,7 @@ namespace IteratorKit
                     {
                         if (dir.EndsWith("text_raw"))
                         {
-                            IteratorKit.Logger.LogInfo("got raw dir file");
+                            IteratorKit.Logger.LogInfo("EncryptDialogFiles(): got raw dir file");
                             ProcessUnencryptedTexts(dir, mod.path);
                         }
                     }
@@ -395,7 +405,7 @@ namespace IteratorKit
         {
             for (int i = 0; i < ExtEnum<InGameTranslator.LanguageID>.values.Count; i++)
             {
-                IteratorKit.Logger.LogInfo("Encypting text files");
+                IteratorKit.Logger.LogInfo("ProcessUnencryptedTexts(): Encypting text files");
                 InGameTranslator.LanguageID languageID = InGameTranslator.LanguageID.Parse(i);
                 string langDir = Path.Combine(dir, $"Text_{LocalizationTranslator.LangShort(languageID)}").ToLowerInvariant();
                 //string langDir = string.Concat(new string[]
@@ -408,14 +418,14 @@ namespace IteratorKit
                 //    LocalizationTranslator.LangShort(languageID),
                 //    Path.DirectorySeparatorChar.ToString()
                 //   }).ToLowerInvariant();
-                IteratorKit.Logger.LogInfo($"Checking lang dir {langDir}");
+                IteratorKit.Logger.LogInfo($"ProcessUnencryptedTexts(): Checking lang dir {langDir}");
                 IteratorKit.Logger.LogWarning(Directory.Exists(langDir));
                 if (Directory.Exists(langDir))
                 {
                     string[] files = Directory.GetFiles(langDir, "*.txt", SearchOption.AllDirectories);
                     foreach (string file in files)
                     {
-                        IteratorKit.Logger.LogInfo($"Encrypting file at ${file}");
+                        IteratorKit.Logger.LogInfo($"ProcessUnencryptedTexts(): Encrypting file at ${file}");
                         string result = InGameTranslator.EncryptDecryptFile(file, true, true);
                         IteratorKit.Logger.LogInfo(result);
                         SaveEncryptedText(modDir, languageID, result, Path.GetFileName(file));
@@ -430,13 +440,13 @@ namespace IteratorKit
             string modTexts = Path.Combine(modDir, "text", $"Text_{LocalizationTranslator.LangShort(langId)}").ToLowerInvariant();
             if (!Directory.Exists(modTexts))
             {
-                Logger.LogWarning($"Creating texts directory for mod dir {modTexts}");
+                Logger.LogWarning($"SaveEncryptedText: Creating texts directory for mod dir {modTexts}");
                 Directory.CreateDirectory(modTexts);
             }
             string encryptedLangFilePath = Path.Combine(modTexts, origFileName).ToLowerInvariant();
-            Logger.LogInfo($"Writing file to: {encryptedLangFilePath}");
+            Logger.LogInfo($"SaveEncryptedText: Writing file to: {encryptedLangFilePath}");
             File.WriteAllText(encryptedLangFilePath, encryptedText, encoding: Encoding.UTF8);
-            Logger.LogInfo("Wrote encrypted text file.");
+            Logger.LogInfo("SaveEncryptedText: Wrote encrypted text file.");
             
         }
 
@@ -448,7 +458,8 @@ namespace IteratorKit
             }
             catch (IndexOutOfRangeException e)
             {
-                CMOracleDebugUI.ModWarningText("ROOM SHORTCUTS ARE NOT SETUP CORRECTLY. this is a kind message just to let you know from iteratorkit :).", self.game.rainWorld);
+                //aww; how nice. they thought about region makers.
+                CMOracleDebugUI.ModWarningText("InformOfInvalidShortcutError(): ROOM SHORTCUTS ARE NOT SETUP CORRECTLY. this is a kind message just to let you know from iteratorkit :).", self.game.rainWorld);
                 ExceptionDispatchInfo.Capture(e).Throw(); // re-throw the error
             }
 
