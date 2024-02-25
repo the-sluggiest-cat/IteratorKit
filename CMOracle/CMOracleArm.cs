@@ -16,14 +16,14 @@ namespace IteratorKit.CMOracle
 
         public CMOracleArm(CMOracle oracle) : base(oracle)
         {
-            IteratorKit.Logger.LogInfo("setup arm");
-            IteratorKit.Logger.LogInfo(oracle.oracleJson.id);
+            IteratorKit.Logger.LogInfo("OracleArm: setup arm");
+            IteratorKit.Logger.LogInfo($"OracleArm: {oracle.oracleJson.id}");
             this.oracle = oracle;
             this.baseMoveSoundLoop = new StaticSoundLoop(SoundID.SS_AI_Base_Move_LOOP, oracle.firstChunk.pos, oracle.room, 1f, 1f);
 
             this.cornerPositions = new Vector2[4];
             List<OracleJsonTilePos> cornerPositionsJson = oracle.oracleJson.cornerPositions;
-            IteratorKit.Logger.LogInfo(cornerPositionsJson.Count);
+            IteratorKit.Logger.LogInfo($"OracleArm: {cornerPositionsJson.Count}");
 
             this.cornerPositions[0] = oracle.room.MiddleOfTile(cornerPositionsJson[0].x, cornerPositionsJson[0].y);
             this.cornerPositions[1] = oracle.room.MiddleOfTile(cornerPositionsJson[1].x, cornerPositionsJson[1].y);

@@ -31,7 +31,8 @@ namespace IteratorKit
         public const string PLUGIN_GUID = "slugcat.progtreatment";
         public const string PLUGIN_NAME = "progtreatment";
         public const string PLUGIN_DESC = "Heavily modified framework for creating and editing Iterator dialogue.<LINE> <LINE>For mod developers, please see the GitHub page: https://github.com/Twofour2/IteratorKit/.<LINE>Originally created by Twofour2.";
-        public const string PLUGIN_VERSION = "0.0a";
+        //BepInEx called 0.0a version invalid; so we're sticking with 0.0. fuck you too, Bep.
+        public const string PLUGIN_VERSION = "0.0";
 
         private bool oracleHasSpawned = false;
         public CMOracle.CMOracle oracle;

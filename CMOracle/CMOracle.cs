@@ -87,7 +87,7 @@ namespace IteratorKit.CMOracle
                 this.marbles = new List<PebblesPearl>();
                 this.SetUpMarbles();
             }
-            IteratorKit.Logger.LogWarning("init screen");
+            IteratorKit.Logger.LogWarning("this.myScreen: init screen");
             this.myScreen = new OracleProjectionScreen(this.room, this.oracleBehavior);
             this.room.AddObject(this.myScreen);
 
@@ -156,7 +156,7 @@ namespace IteratorKit.CMOracle
                 OracleGraphics customGraphicsModule = CMForceGraphicsModule?.Invoke(this);
                 if (customGraphicsModule != null)
                 {
-                    IteratorKit.Logger.LogWarning($"IteratorKit is loading a custom graphics module \"{customGraphicsModule.GetType().Name}\" for oracle {this.ID}");
+                    IteratorKit.Logger.LogWarning($"InitiateGraphicsModule(): IteratorKit is loading a custom graphics module \"{customGraphicsModule.GetType().Name}\" for oracle {this.ID}");
                     base.graphicsModule = customGraphicsModule;
                 }
                 else
@@ -169,7 +169,7 @@ namespace IteratorKit.CMOracle
 
         public static void SetUpSwarmers(On.Oracle.orig_SetUpSwarmers orig, Oracle self)
         {
-            IteratorKit.Logger.LogWarning("SETUP SWARMERS");
+            IteratorKit.Logger.LogWarning("SetUpSwarmers(): SETUP SWARMERS");
             if (self is CMOracle)
             {
                 CMOracle cMOracle = (CMOracle)self;

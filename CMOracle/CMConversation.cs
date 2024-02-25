@@ -46,7 +46,7 @@ namespace IteratorKit.CMOracle
         public override void AddEvents()
         {
             // read this.id
-            IteratorKit.Logger.LogInfo($"Adding events for {this.eventId}");
+            IteratorKit.Logger.LogInfo($"AddEvents(): Adding events for {this.eventId}");
             List<OracleEventObjectJson> dialogList = this.oracleDialogJson.generic;
             
             switch (this.eventType)
@@ -61,7 +61,7 @@ namespace IteratorKit.CMOracle
                     dialogList = this.oracleDialogJson.items;
                     break;
                 default:
-                    IteratorKit.Logger.LogError("Tried to get non-existant dialog type. using generic");
+                    IteratorKit.Logger.LogError("AddEvents(): Tried to get non-existant dialog type. using generic");
                     dialogList = this.oracleDialogJson.generic;
                     break;
             }
@@ -76,7 +76,7 @@ namespace IteratorKit.CMOracle
                     {
                         if (creaturesInRoom.Count > 0 && !HasMatchingCreatureInRoom(item.creaturesInRoom))
                         {
-                            IteratorKit.Logger.LogInfo("Skipping dialog due to creature requirement");
+                            IteratorKit.Logger.LogInfo("AddEvents(): Skipping dialog due to creature requirement");
                             continue;
                         }
                         
@@ -85,7 +85,7 @@ namespace IteratorKit.CMOracle
                     if (forSlugcats != null){
                         if (forSlugcats.Count > 0 && !item.forSlugcats.Contains(this.owner.oracle.room.game.GetStorySession.saveStateNumber))
                         {
-                            IteratorKit.Logger.LogInfo("Skipping dialog as it's not for this slugcat");
+                            IteratorKit.Logger.LogInfo("AddEvents(): Skipping dialog as it's not for this slugcat");
                             continue; // skip as this one isnt for us
                         }
                         
@@ -103,7 +103,7 @@ namespace IteratorKit.CMOracle
                         return;
                     }
 
-                    IteratorKit.Logger.LogInfo("Dialog passed all checks");
+                    IteratorKit.Logger.LogInfo("AddEvents(): Dialog passed all checks");
 
 
                     // add the texts. get texts handles randomness
@@ -118,7 +118,7 @@ namespace IteratorKit.CMOracle
 
                     if (item.texts == null && item.text == null && item.action == null)
                     {
-                        IteratorKit.Logger.LogWarning("No provided action/text. adding dummy event");
+                        IteratorKit.Logger.LogWarning("AddEvents(): No provided action/text. adding dummy event");
                         this.events.Add(new CMOracleActionEvent(this, "none", item));
                     }
                 }
@@ -126,7 +126,7 @@ namespace IteratorKit.CMOracle
             }
             else
             {
-                IteratorKit.Logger.LogInfo("Fallback to collections code for "+this.pearlType);
+                IteratorKit.Logger.LogInfo("AddEvents(): Fallback to collections code for "+this.pearlType);
                 if (this.TryLoadCustomPearls())
                 {
                     return;
@@ -136,7 +136,7 @@ namespace IteratorKit.CMOracle
                 }
                 else
                 {
-                    IteratorKit.Logger.LogWarning($"Failed to find dialog {this.eventId} of type {this.eventType}");
+                    IteratorKit.Logger.LogWarning($"AddEvents(): Failed to find dialog {this.eventId} of type {this.eventType}");
                     return;
                 }
                 
@@ -292,14 +292,14 @@ namespace IteratorKit.CMOracle
             }
             if (dialogData.movement != null)
             {
-                IteratorKit.Logger.LogWarning($"Change movement to {dialogData.movement}");
+                IteratorKit.Logger.LogWarning($"OnEventActivate(): Change movement to {dialogData.movement}");
                 if (Enum.TryParse(dialogData.movement, out CMOracleMovement tmpMovement))
                 {
                     this.owner.movementBehavior = tmpMovement;
                 }
                 else
                 {
-                    IteratorKit.Logger.LogError($"Invalid movement option provided: {dialogData.movement}");
+                    IteratorKit.Logger.LogError($"OnEventActivate(): Invalid movement option provided: {dialogData.movement}");
                 }
             }
             if (dialogData.screens.Count > 0)
@@ -366,7 +366,7 @@ namespace IteratorKit.CMOracle
 
             public CMOracleActionEvent(CMConversation owner, string action, OracleEventObjectJson dialogData) : base(owner, dialogData.delay)
             {
-                IteratorKit.Logger.LogInfo("Adding action event");
+                IteratorKit.Logger.LogInfo("CMOracleActionEvent(): Adding action event");
                 this.owner = owner;
                 this.action = action;
                 this.actionParam = dialogData.actionParam;
@@ -377,7 +377,7 @@ namespace IteratorKit.CMOracle
             public override void Activate()
             {
                 base.Activate();
-                IteratorKit.Logger.LogInfo($"Triggering action ${action}");
+                IteratorKit.Logger.LogInfo($"Activate(): Triggering action ${action}");
                 this.owner.owner.NewAction(action, this.actionParam); // this passes the torch over to CMOracleBehavior to run the rest of this shite
                 this.owner.OnEventActivate(this, dialogData); // get owner to run addit checks
             }
@@ -387,11 +387,11 @@ namespace IteratorKit.CMOracle
             {
                 for (int i = 0; i < DataPearl.AbstractDataPearl.DataPearlType.values.Count; i++)
                 {
-                    IteratorKit.Logger.LogInfo($"Pearl: {DataPearl.AbstractDataPearl.DataPearlType.values.GetEntry(i)}");
+                    IteratorKit.Logger.LogInfo($"LogAllDialogEvents(): Pearl: {DataPearl.AbstractDataPearl.DataPearlType.values.GetEntry(i)}");
                 }
                 for (int i = 0; i < AbstractPhysicalObject.AbstractObjectType.values.Count; i++)
                 {
-                    IteratorKit.Logger.LogInfo($"Item: {AbstractPhysicalObject.AbstractObjectType.values.GetEntry(i)}");
+                    IteratorKit.Logger.LogInfo($"LogAllDialogEvents(): Item: {AbstractPhysicalObject.AbstractObjectType.values.GetEntry(i)}");
                 }
             }
 

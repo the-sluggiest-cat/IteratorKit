@@ -10,12 +10,12 @@ namespace IteratorKit.CMOracle
     {
         public CMOracleSitBehavior(CMOracle oracle) : base(oracle)
         {
-            IteratorKit.Logger.LogWarning("Init as sitting");
+            IteratorKit.Logger.LogWarning("OracleSit: Init as sitting");
         }
 
         public override void Update(bool eu)
         {
-            IteratorKit.Logger.LogWarning("Sitting update!");
+            IteratorKit.Logger.LogWarning("OracleSit: Sitting update!");
         }
     }
 }

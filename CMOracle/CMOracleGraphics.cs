@@ -239,7 +239,7 @@ namespace IteratorKit.CMOracle
 
             if (this.bodyJson.sigil?.sprite != null)
             {
-                IteratorKit.Logger.LogWarning("loading sigil sprite");
+                IteratorKit.Logger.LogWarning("bodyJson.sigil: loading sigil sprite");
                 sLeaser.sprites[this.sigilSprite] = new FSprite((this.bodyJson.sigil.sprite != null) ? this.bodyJson.sigil.sprite : "MoonSigil", true); // sigil
                 sLeaser.sprites[this.sigilSprite].color = this.bodyJson.sigil.color;
             }
@@ -365,7 +365,7 @@ namespace IteratorKit.CMOracle
         {
             if (spriteData == null && defaultSpriteData == null)
             {
-                IteratorKit.Logger.LogWarning("apply sprite given null data");
+                IteratorKit.Logger.LogWarning("ApplySpriteColor(): apply sprite given null data");
                 return sprite;
             }else if (spriteData == null)
             {
@@ -377,12 +377,12 @@ namespace IteratorKit.CMOracle
             {
                 if (this.oracle.room.game.rainWorld.Shaders.TryGetValue(spriteData.shader, out FShader shader))
                 {
-                    IteratorKit.Logger.LogInfo($"Applying shader {spriteData.shader}");
+                    IteratorKit.Logger.LogInfo($"spriteData: Applying shader {spriteData.shader}");
                     sprite.shader = shader;
                 }
                 else
                 {
-                    IteratorKit.Logger.LogError($"cannot get shader named {spriteData.shader}");
+                    IteratorKit.Logger.LogError($"spriteData: cannot get shader named {spriteData.shader}");
                 }
             }
             return sprite;

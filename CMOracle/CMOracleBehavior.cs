@@ -119,7 +119,7 @@ namespace IteratorKit.CMOracle
         }
 
         public CMOracleBehavior(Oracle oracle) : base (oracle){
-            IteratorKit.Logger.LogWarning(oracle);
+            IteratorKit.Logger.LogWarning($"CMOracleBehavior: {oracle}");
             this.oracle = oracle;
             this.currentGetTo = oracle.firstChunk.pos;
             this.lastPos = oracle.firstChunk.pos;
@@ -202,7 +202,7 @@ namespace IteratorKit.CMOracle
 
             if (this.inspectItem != null && this.cmConversation == null)
             {
-                IteratorKit.Logger.LogWarning("Starting convo about item "+this.inspectItem.abstractPhysicalObject.ToString());
+                IteratorKit.Logger.LogWarning("Update(): Starting convo about item "+this.inspectItem.abstractPhysicalObject.ToString());
                 this.StartItemConversation(this.inspectItem);
             }
             if (this.inspectItem != null)
@@ -254,21 +254,21 @@ namespace IteratorKit.CMOracle
                                         }
                                     }
                                     this.inspectItem = pearl;
-                                    IteratorKit.Logger.LogInfo($"Set inspect pearl to {pearl.AbstractPearl.dataPearlType}");
+                                    IteratorKit.Logger.LogInfo($"physObject: Set inspect pearl to {pearl.AbstractPearl.dataPearlType}");
                                 }
                                 else
                                 {
-                                    IteratorKit.Logger.LogInfo($"Found other item {physObject.abstractPhysicalObject.ToString()}");
+                                    IteratorKit.Logger.LogInfo($"physObject: Found other item {physObject.abstractPhysicalObject.ToString()}");
                                     SLOracleBehaviorHasMark.MiscItemType msc = new SLOracleBehaviorHasMark.MiscItemType("NA", false);
                                     if (SLOracleBehaviorHasMark.MiscItemType.TryParse(msc.enumType, physObject.GetType().ToString(), true, out ExtEnumBase result))
                                     {
-                                        IteratorKit.Logger.LogInfo("Found a valid item");
+                                        IteratorKit.Logger.LogInfo("physObject: Found a valid item");
                                         this.StartItemConversation(physObject);
                                         this.inspectItem = physObject;
                                     }
                                     else
                                     {
-                                        IteratorKit.Logger.LogInfo($"Failed to find match for {physObject.GetType().ToString()}");
+                                        IteratorKit.Logger.LogInfo($"physObject: Failed to find match for {physObject.GetType().ToString()}");
                                     }
                                 }
 
@@ -300,13 +300,13 @@ namespace IteratorKit.CMOracle
                 }else if (this.cmConversation.eventId == "playerEnter" && !this.HasHadMainPlayerConversation())
                 {
                     this.inspectItem = null;
-                    IteratorKit.Logger.LogInfo("Starting main player conversation as it hasn't happened yet.");
+                    IteratorKit.Logger.LogInfo("HasHadMainPlayerConversation()=false: Starting main player conversation as it hasn't happened yet.");
                     this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
                     //SetHasHadMainPlayerConversation(true);
                 }
                 else
                 {
-                    IteratorKit.Logger.LogInfo($"Destroying converstaion {this.cmConversation.eventId}");
+                    IteratorKit.Logger.LogInfo($"HasHadMainPlayerConversation()=true: Destroying conversation {this.cmConversation.eventId}");
                     if (this.cmConversation.eventId == "playerConversation")
                     {
                         SetHasHadMainPlayerConversation(true);
@@ -445,7 +445,7 @@ namespace IteratorKit.CMOracle
 
         public void SetNewDestination(Vector2 dst)
         {
-            IteratorKit.Logger.LogWarning("set new pos " + dst);
+            IteratorKit.Logger.LogWarning("SetNewDestination(): set new pos " + dst);
             this.lastPos = this.currentGetTo;
             this.nextPos = dst;
             this.lastPosHandle = Custom.RNV() * Mathf.Lerp(0.3f, 0.65f, UnityEngine.Random.value) * Vector2.Distance(this.lastPos, this.nextPos);
@@ -504,7 +504,7 @@ namespace IteratorKit.CMOracle
 
         public void NewAction(string nextAction, string actionParam)
         {
-            IteratorKit.Logger.LogInfo($"new action: {nextAction} (from: {this.action})");
+            IteratorKit.Logger.LogInfo($"NewAction(): new action: {nextAction} (from: {this.action})");
             if (nextAction == this.actionStr)
             {
                 return;
@@ -564,10 +564,10 @@ namespace IteratorKit.CMOracle
                     {
                         this.oracle.room.game.cameras[0].EnterCutsceneMode(this.player.abstractCreature, RoomCamera.CameraCutsceneType.Oracle);
                         // now we can start calling player dialogs!
-                        IteratorKit.Logger.LogInfo($"Has had main conversation? {HasHadMainPlayerConversation()}");
+                        IteratorKit.Logger.LogInfo($"this.sayHelloDelay == 1: Has had main conversation? {HasHadMainPlayerConversation()}");
                         if (!HasHadMainPlayerConversation() && (this.oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
                         {
-                            IteratorKit.Logger.LogInfo("Starting main player conversation as it hasn't happened yet.");
+                            IteratorKit.Logger.LogInfo("this.sayHelloDelay == 1: Starting main player conversation as it hasn't happened yet.");
                             this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
                            
                         }
@@ -647,10 +647,10 @@ namespace IteratorKit.CMOracle
         {
             if (this.conversationResumeTo == null)
             {
-                IteratorKit.Logger.LogInfo("No conversation to resume to.");
+                IteratorKit.Logger.LogInfo("conversationResumeTo == null: No conversation to resume to.");
                 return;
             }
-            IteratorKit.Logger.LogInfo($"Resuming conversation {this.conversationResumeTo}");
+            IteratorKit.Logger.LogInfo($"conversationResumeTo: Resuming conversation {this.conversationResumeTo}");
             this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "conversationResume");
             this.cmConversation.resumeConvFlag = true; // when this is flagged for deletion, this flag will cause it to instead replace the conversation with conversationResumeTo
          
@@ -708,7 +708,7 @@ namespace IteratorKit.CMOracle
                 this.playerScore = amount;
             }
             saveData.Set($"{this.oracle.ID}_playerScore", this.playerScore);
-            IteratorKit.Logger.LogInfo($"Changed player score to {this.playerScore}");
+            IteratorKit.Logger.LogInfo($"playerScore: Changed player score to {this.playerScore}");
             if (this.playerScore < this.oracle.OracleJson().annoyedScore)
             {
                 this.oracleAnnoyed = true;
@@ -721,7 +721,7 @@ namespace IteratorKit.CMOracle
 
         public void ReactToHitByWeapon(Weapon weapon)
         {
-            IteratorKit.Logger.LogWarning("oracle hit by weapon");
+            IteratorKit.Logger.LogWarning("ReactToHitByWeapon(): oracle hit by weapon");
             if (UnityEngine.Random.value < 0.5f)
             {
                 this.oracle.room.PlaySound(SoundID.SS_AI_Talk_1, this.oracle.firstChunk).requireActiveUpkeep = false;
@@ -730,7 +730,7 @@ namespace IteratorKit.CMOracle
             {
                 this.oracle.room.PlaySound(SoundID.SS_AI_Talk_4, this.oracle.firstChunk).requireActiveUpkeep = false;
             }
-            IteratorKit.Logger.LogWarning("Player attack convo");
+            IteratorKit.Logger.LogWarning("ReactToHitByWeapon(): Player attack convo");
             this.conversationResumeTo = this.cmConversation;
             // clear the current dialog box
             if (this.dialogBox.messages.Count > 0)
@@ -766,7 +766,7 @@ namespace IteratorKit.CMOracle
                 case CMOracleAction.giveMark:
                     if (((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.theMark)
                     {
-                        IteratorKit.Logger.LogWarning("Player already has mark!");
+                        IteratorKit.Logger.LogWarning("giveMark: Player already has mark!");
                         this.action = CMOracleAction.generalIdle;
                         return;
                     }
@@ -888,7 +888,7 @@ namespace IteratorKit.CMOracle
                 case CMOracleAction.killPlayer:
                     if (!this.player.dead && this.player.room == this.oracle.room)
                     {
-                        IteratorKit.Logger.LogInfo("Oracle killing player");
+                        IteratorKit.Logger.LogInfo("killPlayer: Oracle killing player");
                         this.player.mainBodyChunk.vel += Custom.RNV() * 12f;
                         for (int i = 0; i < 20; i++)
                         {
@@ -901,7 +901,7 @@ namespace IteratorKit.CMOracle
                     base.SpecialEvent(this.actionStr);
                     if (this.inActionCounter < 0) // allows custom action to signal it wants to quit
                     {
-                        IteratorKit.Logger.LogInfo("Custom action signalled it was done");
+                        IteratorKit.Logger.LogInfo("customAction: Custom action signalled it was done");
                         this.action = CMOracleAction.generalIdle;
                         this.actionStr = null;
                     }
@@ -924,7 +924,7 @@ namespace IteratorKit.CMOracle
                     }
                 }
             }
-            IteratorKit.Logger.LogInfo($"Failed to find shortcut with room to {roomId}");
+            IteratorKit.Logger.LogInfo($"GetShortcutToRoom(): Failed to find shortcut with room to {roomId}");
             return null;
         }
 
@@ -967,7 +967,7 @@ namespace IteratorKit.CMOracle
             { // move to next screen
                 if (this.currScreen >= this.screens.Count()) // are we out of screens?
                 {
-                    IteratorKit.Logger.LogInfo("destroy image");
+                    IteratorKit.Logger.LogInfo("currScreen: destroy image");
                     this.currScreen = 0;
                     this.screens = null;
                     this.currImage.Destroy();
@@ -978,7 +978,7 @@ namespace IteratorKit.CMOracle
                 { // show next screen
                     
                     OracleJSON.OracleEventsJson.OracleScreenJson screen = this.screens[this.currScreen];
-                    IteratorKit.Logger.LogInfo($"next image {screen.image} at pos {screen.pos} with alpha {screen.alpha}");
+                    IteratorKit.Logger.LogInfo($"currScreen: next image {screen.image} at pos {screen.pos} with alpha {screen.alpha}");
                     if (screen.image != null)
                     {
                         if (this.currImage != null)
