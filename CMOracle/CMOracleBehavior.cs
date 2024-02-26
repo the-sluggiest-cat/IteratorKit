@@ -148,6 +148,7 @@ namespace IteratorKit.CMOracle
 
         public override void Update(bool eu)
         {
+            // below is for clarification on rain world updating (i.e., changing states, NOT gamedev update (once per frame))
             // for the most part seems to handle changing states, i.e if player enters the room
             base.Update(eu);
             if (this is CMOracleSitBehavior)
@@ -749,6 +750,7 @@ namespace IteratorKit.CMOracle
         {
             if (this.player == null)
             { // for dealing with other mods that somehow set this to null
+                Logger.LogInfo("CheckActions(): who tf is touching me... no....")
                 return;
             }
 
@@ -766,7 +768,7 @@ namespace IteratorKit.CMOracle
                 case CMOracleAction.giveMark:
                     if (((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.theMark)
                     {
-                        IteratorKit.Logger.LogWarning("giveMark: Player already has mark!");
+                        IteratorKit.Logger.LogWarning("CheckActions(): Player already has mark!");
                         this.action = CMOracleAction.generalIdle;
                         return;
                     }
@@ -798,7 +800,7 @@ namespace IteratorKit.CMOracle
                     if (this.inActionCounter == 300)
                     {
                         this.action = CMOracleAction.generalIdle;
-                        this.player.AddFood(10);
+                        this.player.AddFood(Int32.TryParse(this.actionParam, out int foodPips));
                         foreach (Player player in base.PlayersInRoom)
                         {
                             for (int i = 0; i < 20; i++)

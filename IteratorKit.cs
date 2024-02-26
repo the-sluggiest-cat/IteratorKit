@@ -337,7 +337,7 @@ namespace IteratorKit
                                 null,
                                 worldCoordinate,
                                 self.game.GetNewID());
-                            IteratorKit.Logger.LogWarning(oracleJson == null);
+                            IteratorKit.Logger.LogWarning($"SpawnOracle(): {oracleJson == null}");
                             oracle = new CMOracle.CMOracle(abstractPhysicalObject, self, oracleJson);
                             self.AddObject(oracle);
                             self.waitToEnterAfterFullyLoaded = Math.Max(self.waitToEnterAfterFullyLoaded, 20);
