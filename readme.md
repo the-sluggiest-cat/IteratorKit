@@ -7,11 +7,12 @@ This mod is a fork of IteratorKit, with modifications for more advanced movement
 - Customizable colors, gowns, halos and sigils
 - Events system for running actions and dialogs
 - Item/Pearl dialogs
-- Override dialogs/events for specific slugcats. I.e. custom slugs
-- Creature detection for joke dialogs 
+- Override dialogs/events for specific slugcats, i.e., custom slugs
+- Creature detection for joke dialogs
 - Create custom pearls with unique dialogs for each iterator
 
 **[Documentation](https://iteratorkit.twofour2.com/index.html)**
+
 (coming soon: PT docs)
 
 
