@@ -157,7 +157,6 @@ namespace IteratorKit.CMOracle
             }
 
             this.Move();
-            
 
             this.pathProgression = Mathf.Min(1f, this.pathProgression + 1f / Mathf.Lerp(40f + this.pathProgression * 80f, Vector2.Distance(this.lastPos, this.nextPos) / 5f, 0.5f));
 
@@ -750,7 +749,7 @@ namespace IteratorKit.CMOracle
         {
             if (this.player == null)
             { // for dealing with other mods that somehow set this to null
-                Logger.LogInfo("CheckActions(): who tf is touching me... no....");
+                IteratorKit.Logger.LogInfo("CheckActions(): who tf is touching me... no....");
                 return;
             }
 
@@ -799,18 +798,21 @@ namespace IteratorKit.CMOracle
                     }
                     if (this.inActionCounter == 300)
                     {
-                        this.action = CMOracleAction.generalIdle;
-                        this.player.AddFood(Int32.TryParse(this.actionParam, out int foodPips));
-                        foreach (Player player in base.PlayersInRoom)
-                        {
-                            for (int i = 0; i < 20; i++)
-                            {
-                                this.oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                      this.action = CMOracleAction.generalIdle;
+			                if (Int32.TryParse(this.actionParam, out int foodPips)) {
+				                this.player.AddFood(foodPips);
+			                } else {
+				                IteratorKit.Logger.LogWarning("CheckActions(): Either actionParam is null, or something we can't parse, so we won't do nada for the scug.");
+		                  }
+                      
+                        foreach (Player player in base.PlayersInRoom) {
+                            for (int i = 0; i < 20; i++) {
+                              this.oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
                             }
                         }
 
-                        ((StoryGameSession)this.player.room.game.session).saveState.deathPersistentSaveData.theMark = true;
-                        this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "afterGiveMark");
+                      ((StoryGameSession)this.player.room.game.session).saveState.deathPersistentSaveData.theMark = true;
+                      this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "afterGiveMark");
                     }
                     break;
                 case CMOracleAction.giveKarma:
