@@ -750,7 +750,7 @@ namespace IteratorKit.CMOracle
         {
             if (this.player == null)
             { // for dealing with other mods that somehow set this to null
-                Logger.LogInfo("CheckActions(): who tf is touching me... no....")
+                Logger.LogInfo("CheckActions(): who tf is touching me... no....");
                 return;
             }
 
