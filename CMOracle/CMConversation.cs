@@ -182,7 +182,7 @@ namespace IteratorKit.CMOracle
                 }
                 else
                 {
-                    IteratorKit.Logger.LogError($"Failed to load dialog texts for this oracle.");
+                    IteratorKit.Logger.LogError("TryLoadCustomPearls(): Failed to load dialog texts for this oracle.");
                 }
             }
             return false;
@@ -272,7 +272,7 @@ namespace IteratorKit.CMOracle
                 }
                 if (creaturesInRoom.Contains(abstractCreature.creatureTemplate.type))
                 {
-                    IteratorKit.Logger.LogInfo($"Found creature in room {abstractCreature.creatureTemplate.type}");
+                    IteratorKit.Logger.LogInfo($"HasMatchingCreatureInRoom(): Found creature in room {abstractCreature.creatureTemplate.type}");
                     return true;
                 }
             }

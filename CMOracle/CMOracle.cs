@@ -87,7 +87,7 @@ namespace IteratorKit.CMOracle
                 this.marbles = new List<PebblesPearl>();
                 this.SetUpMarbles();
             }
-            IteratorKit.Logger.LogWarning("this.myScreen: init screen");
+            IteratorKit.Logger.LogWarning("CMOracle(): init screen");
             this.myScreen = new OracleProjectionScreen(this.room, this.oracleBehavior);
             this.room.AddObject(this.myScreen);
 
