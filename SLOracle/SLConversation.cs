@@ -38,7 +38,7 @@ namespace IteratorKit.SLOracle
 
         public SLConversation(OracleJSON oracleJSON) {
             this.oracleJSON = oracleJSON;
-            this.oracleDialog = oracleJSON?.events;
+            this.oracleDialog = oracleJSON?.events["Yellow"];
           //  SLConversation.LogAllActionsAndMovements();
         }
 

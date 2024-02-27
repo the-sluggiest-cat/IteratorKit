@@ -131,7 +131,7 @@ namespace IteratorKit.CMOracle
         ///     "items": []
         /// }
         /// </example>
-        public List<OracleSlugcatsJson> events = new List<OracleSlugcatsJson>();
+        public List<OracleEventsJson> events = new List<OracleEventsJson>();
 
         /// <exclude/>
         public class OracleRoomEffectsJson
@@ -234,9 +234,9 @@ namespace IteratorKit.CMOracle
 
         //events -> slugcat ID -> generic/pearls/items
         
-        public class OracleSlugcatsJson {
+        public class OracleEventsJson {
 
-            public List<OracleEventsJson> slugcat = new List<OracleEventsJson>();             
+            public List<OracleSlugcatsJson> slugcat = new Dictionary<string, OracleSlugcatsJson>();             
         
         }
 
@@ -244,7 +244,7 @@ namespace IteratorKit.CMOracle
         /// <summary>
         /// Core events class See <see cref="OracleEventObjectJson"/> for how events work
         /// </summary>
-        public class OracleEventsJson
+        public class OracleSlugcatsJson
         {
             public string id = null;
             /// <exclude/>
@@ -347,15 +347,8 @@ namespace IteratorKit.CMOracle
                 }
 
                 /// <exclude/>
-                public List<string> getTexts(SlugcatStats.Name forSlugcat)
+                public List<string> getTexts()
                 {
-                    if (this.forSlugcats != null)
-                    {
-                        if (this.forSlugcats?.Count > 0 && !this.forSlugcats.Contains(forSlugcat))
-                        {
-                            return null;
-                        }
-                    }
                     
                     if ((this.texts?.Count ?? 0) == 0)
                     {

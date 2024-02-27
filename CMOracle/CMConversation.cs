@@ -47,7 +47,7 @@ namespace IteratorKit.CMOracle
         {
             // read this.id
             IteratorKit.Logger.LogInfo($"AddEvents(): Adding events for {this.eventId}");
-            List<OracleEventObjectJson> dialogList = this.oracleDialogJson.generic;
+            List<OracleEventObjectJson> dialogList = this.oracleDialogJson[this.owner.oracle.room.game.StoryCharacter.value].generic;
             
             switch (this.eventType)
             {
@@ -81,15 +81,6 @@ namespace IteratorKit.CMOracle
                         }
                         
                     }
-                    List<SlugcatStats.Name> forSlugcats = item.forSlugcats;
-                    if (forSlugcats != null){
-                        if (forSlugcats.Count > 0 && !item.forSlugcats.Contains(this.owner.oracle.room.game.GetStorySession.saveStateNumber))
-                        {
-                            IteratorKit.Logger.LogInfo("AddEvents(): Skipping dialog as it's not for this slugcat");
-                            continue; // skip as this one isnt for us
-                        }
-                        
-                    }
                     
 
                     if (item.action != null)
@@ -107,7 +98,7 @@ namespace IteratorKit.CMOracle
 
 
                     // add the texts. get texts handles randomness
-                    foreach (string text in item.getTexts(this.owner.oracle.room.game.StoryCharacter))
+                    foreach (string text in item.getTexts())
                     {
                         if (text != null)
                         {
@@ -255,8 +246,8 @@ namespace IteratorKit.CMOracle
                 this.Destroy();
                 return;
             }
-            this.events[0].Update();
-            if (this.events[0].IsOver)
+            this.events[this.owner.oracle.room.game.StoryCharacter.value].Update();
+            if (this.events[this.owner.oracle.room.game.StoryCharacter.value].IsOver)
             {
                 this.events.RemoveAt(0);
             }
