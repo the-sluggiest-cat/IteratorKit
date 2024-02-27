@@ -191,7 +191,7 @@ namespace IteratorKit
                             if (Path.GetFileName(file).StartsWith("oracle"))
                             {
                                 IteratorKit.Logger.LogWarning($"LoadOracleFiles(): Loading atlas! sprites/{Path.GetFileNameWithoutExtension(file)}");
-                                Futile.atlasManager.LoadAtlas($"LoadOracleFiles(): sprites/{Path.GetFileNameWithoutExtension(file)}");
+                                Futile.atlasManager.LoadAtlas($"sprites/{Path.GetFileNameWithoutExtension(file)}");
                             }
                         }
                     }
@@ -243,6 +243,7 @@ namespace IteratorKit
         public void LoadOracleFile(string file)
         {
             List<OracleJSON> ojs = JsonConvert.DeserializeObject<List<OracleJSON>>(File.ReadAllText(file));
+            IteratorKit.Logger.LogInfo($"{ojs}");
 
             foreach (OracleJSON oracleData in ojs)
             {
