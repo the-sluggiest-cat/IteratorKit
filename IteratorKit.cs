@@ -191,7 +191,7 @@ namespace IteratorKit
                             if (Path.GetFileName(file).StartsWith("oracle"))
                             {
                                 IteratorKit.Logger.LogWarning($"LoadOracleFiles(): Loading atlas! sprites/{Path.GetFileNameWithoutExtension(file)}");
-                                Futile.atlasManager.LoadAtlas($"sprites/{Path.GetFileNameWithoutExtension(file)}");
+                                Futile.atlasManager.LoadAtlas($"LoadOracleFiles(): sprites/{Path.GetFileNameWithoutExtension(file)}");
                             }
                         }
                     }

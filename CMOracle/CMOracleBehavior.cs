@@ -293,11 +293,13 @@ namespace IteratorKit.CMOracle
             }
             
             if ((this.cmConversation != null && this.cmConversation.slatedForDeletion && this.action == CMOracleAction.generalIdle)) {
-                if (this.cmConversation.resumeConvFlag) // special case to resume conversation
+              //todo: afterGiveMark -> playerConversation
+              //todo: alreadyHaveMark (todo) -> playerConversation
+              if (this.cmConversation.resumeConvFlag) // special case to resume conversation
                 {
                     this.cmConversation = this.conversationResumeTo;
                     this.conversationResumeTo = null;
-                }else if (this.cmConversation.eventId == "playerEnter" && !this.HasHadMainPlayerConversation())
+                } else if (this.cmConversation.eventId == "playerEnter" && !this.HasHadMainPlayerConversation())
                 {
                     this.inspectItem = null;
                     IteratorKit.Logger.LogInfo("Update(): Starting main player conversation as it hasn't happened yet.");

@@ -231,6 +231,21 @@ namespace IteratorKit.CMOracle
             }
             
         }
+        
+        public class OracleSlugcatsJson {
+            //todo: slugcats are a key, events are the value
+            [JsonProperty("Yellow")]
+            public List<OracleEventsJson> yellow = new List<OracleEventsJson>();
+             
+          
+        }
+
+        //slugcat name -> events -> generic/pearls/item
+        //slugcat name -> generic/pearls/item
+        //events -> slugcat name -> generic/pearls/item <==
+        //[slugcat names]
+        //slugcat name -> g/p/i???????????????
+
 
         /// <summary>
         /// Core events class See <see cref="OracleEventObjectJson"/> for how events work
@@ -384,7 +399,7 @@ namespace IteratorKit.CMOracle
                 /// "texts": ["This is dialog 1", "This is dialog 2"]
                 /// </example>
                 public List<string> texts;
-
+                //i have zero clue what below does. later me; explain?
                 /// <exclude/>
                 public string translateString = null;
                 /// <summary>
