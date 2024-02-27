@@ -46,7 +46,7 @@ namespace IteratorKit
         public static bool debugMode = false;
         public Debug.CMOracleTestManager testManager = new CMOracleTestManager();
 
-        public delegate void OnEvent(CMOracle.CMOracle oracle, string eventName);
+        public delegate void OnEvent(CMOracle.CMOracle oracle, string eventName); 
         public delegate void OnEventEnd(CMOracle.CMOracle oracle, string eventName);
 
         private void OnEnable()
@@ -88,7 +88,7 @@ namespace IteratorKit
             CMOracle.CMOracle.RemoveHooks();
            // CMOverseer.ApplyHooks();
 
-            On.RainWorld.PostModsInit -= AfterModsInit;
+            On.RainWorld.PostModsInit -= AfterModsInit; 
             On.RainWorldGame.RestartGame -= OnRestartGame;
 
             SlugBase.SaveData.SaveDataHooks.UnApply();
@@ -243,7 +243,11 @@ namespace IteratorKit
         public void LoadOracleFile(string file)
         {
             List<OracleJSON> ojs = JsonConvert.DeserializeObject<List<OracleJSON>>(File.ReadAllText(file));
-            IteratorKit.Logger.LogInfo($"{ojs}");
+            
+            //what i've learned:
+            //the JSON deserializes into a format which is then handled by CMOracleBehavior
+            //todo: interpret the key as a slugcat name, react accordingly
+            //"for": in the JSON should be enough to deter unplanned slugcats, but if no events are present/slugcat is not a key, don't spawn the iterator
 
             foreach (OracleJSON oracleData in ojs)
             {

@@ -52,7 +52,7 @@ namespace IteratorKit.CMOracle
             switch (this.eventType)
             {
                 case CMDialogType.Generic:
-                    dialogList = this.oracleDialogJson.generic;
+                    //dialogList = this.oracleDialogJson.generic; //dialogList is already generic
                     break;
                 case CMDialogType.Pearls:
                     dialogList = this.oracleDialogJson.pearls;
@@ -61,8 +61,8 @@ namespace IteratorKit.CMOracle
                     dialogList = this.oracleDialogJson.items;
                     break;
                 default:
-                    IteratorKit.Logger.LogError("AddEvents(): Tried to get non-existant dialog type. using generic");
-                    dialogList = this.oracleDialogJson.generic;
+                    IteratorKit.Logger.LogError("AddEvents(): Tried to get non-existent dialog type. using generic");
+                    //dialogList = this.oracleDialogJson.generic; //dialoglist is already generic
                     break;
             }
             List<OracleEventObjectJson> dialogData = dialogList?.FindAll(x => x.eventId.ToLower() == this.eventId.ToLower());

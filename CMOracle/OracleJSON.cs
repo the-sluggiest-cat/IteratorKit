@@ -131,7 +131,7 @@ namespace IteratorKit.CMOracle
         ///     "items": []
         /// }
         /// </example>
-        public OracleEventsJson events = new OracleEventsJson();
+        public List<OracleSlugcatsJson> events = new List<OracleSlugcatsJson>();
 
         /// <exclude/>
         public class OracleRoomEffectsJson
@@ -231,20 +231,14 @@ namespace IteratorKit.CMOracle
             }
             
         }
+
+        //events -> slugcat ID -> generic/pearls/items
         
         public class OracleSlugcatsJson {
-            //todo: slugcats are a key, events are the value
-            [JsonProperty("Yellow")]
-            public List<OracleEventsJson> yellow = new List<OracleEventsJson>();
-             
-          
-        }
 
-        //slugcat name -> events -> generic/pearls/item
-        //slugcat name -> generic/pearls/item
-        //events -> slugcat name -> generic/pearls/item <==
-        //[slugcat names]
-        //slugcat name -> g/p/i???????????????
+            public List<OracleEventsJson> slugcat = new List<OracleEventsJson>();             
+        
+        }
 
 
         /// <summary>
@@ -252,6 +246,7 @@ namespace IteratorKit.CMOracle
         /// </summary>
         public class OracleEventsJson
         {
+            public string id = null;
             /// <exclude/>
             public List<OracleEventObjectJson> generic = new List<OracleEventObjectJson>();
             /// <exclude/>
@@ -264,6 +259,7 @@ namespace IteratorKit.CMOracle
             /// </summary>
             public class OracleEventObjectJson
             {
+                private string id = OracleEventObjectJson.id;
 
                 /// <summary>
                 /// ID for this event <see href="/eventIds.html#custom-oracle-only-events"/>
@@ -284,10 +280,10 @@ namespace IteratorKit.CMOracle
                 /// Downpour DLC: Rivulet, Artificer, Saint, Spear, Gourmand, Slugpup, Inv
                 /// </summary>
                 /// <example>
-                /// "for": ["Yellow", "Spear"]
+                // "for": ["Yellow", "Spear"]
                 /// </example>
-                [JsonProperty("for")]
-                private List<String> forSlugList = null; // same as past reference
+                //[JsonProperty("for")]
+                //private List<String> forSlugList = null; // same as past reference
 
                 /// <summary>
                 /// <see href="/eventsIds.html#dialog-creatures"/>
@@ -296,22 +292,22 @@ namespace IteratorKit.CMOracle
                 private List<String> creaturesInRoomList = null;
 
                 /// <exclude/>
-                public List<SlugcatStats.Name> forSlugcats
-                {
-                    get
-                    {
-                        List<SlugcatStats.Name> nameList = new List<SlugcatStats.Name>();
-                        if (this.forSlugList == null || this.forSlugList?.Count <= 0)
-                        {
-                            return nameList;
-                        }
-                        foreach (string slugcatName in this.forSlugList)
-                        {
-                            nameList.Add(new SlugcatStats.Name(slugcatName, false));
-                        }
-                        return nameList;
-                    }
-                }
+                //public List<SlugcatStats.Name> forSlugcats
+                //{
+                //    get
+                //    {
+                //        List<SlugcatStats.Name> nameList = new List<SlugcatStats.Name>();
+                //        if (this.forSlugList == null || this.forSlugList?.Count <= 0)
+                //        {
+                //            return nameList;
+                //        } 
+                //        foreach (string slugcatName in this.forSlugList)
+                //        {
+                //            nameList.Add(new SlugcatStats.Name(slugcatName, false));
+                //        }
+                //        return nameList;
+                //    }
+                //}
 
                 /// <exclude/>
                 public List<CreatureTemplate.Type> creaturesInRoom
