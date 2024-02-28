@@ -22,11 +22,11 @@ namespace IteratorKit.CMOracle
             orig(self, fresh);
             if (regionList.Contains(self.world.region.name))
             {
-                IteratorKit.Logger.LogInfo($"CMOverseer match region {self.world.region.name}");
+                IteratorKit.Logger.LogInfo($"WorldLoader_GeneratePopulation(): CMOverseer match region {self.world.region.name}");
                 OracleJSON.OverseerJson overseerData = overseeerDataList.Find(x => x.regions.Contains(self.world.region.name));
                 if (overseerData == null)
                 {
-                    IteratorKit.Logger.LogError($"Failed to find overseer data for {self.world.region.name}");
+                    IteratorKit.Logger.LogError($"WorldLoader_GeneratePopulation(): Failed to find overseer data for {self.world.region.name}");
                     return;
                 }
                 int randOverseerCount = UnityEngine.Random.Range(overseerData.genMin, overseerData.genMax);

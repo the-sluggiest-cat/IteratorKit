@@ -22,7 +22,7 @@ namespace IteratorKit.Debug
         
         public void EnableTestMode(IteratorKit iteratorKit, RainWorldGame rainWorld)
         {
-            IteratorKit.Logger.LogInfo("Enable test mode");
+            IteratorKit.Logger.LogInfo("EnableTestMode(): Enable test mode");
             this.iteratorKit = iteratorKit;
             this.currentTestTimer = testTimerMax;
             this.currentTestIdx = 0;
@@ -34,7 +34,7 @@ namespace IteratorKit.Debug
             ModManager.Mod testMod = ModManager.ActiveMods.FirstOrDefault(x => x.name == "IteratorKitTest");
             if (testMod == null)
             {
-                IteratorKit.Logger.LogError("Cant begin tests as test mod is not loaded.");
+                IteratorKit.Logger.LogError("EnableTestMode(): Cant begin tests as test mod is not loaded.");
                 return;
             }
             string testFolder = testMod.path + "/tests";
@@ -42,7 +42,7 @@ namespace IteratorKit.Debug
             {
                 this.testOracleFiles.Add(file);
             }
-            IteratorKit.Logger.LogInfo($"Initilized tests with {this.testOracleFiles.Count} files");
+            IteratorKit.Logger.LogInfo($"EnableTestMode(): Initilized tests with {this.testOracleFiles.Count} files");
             if (!appliedHooks)
             {
                 this.appliedHooks = true;
@@ -56,7 +56,7 @@ namespace IteratorKit.Debug
         {
             foreach (CMOracle.CMOracle oracle in iteratorKit.oracleList)
             {
-                IteratorKit.Logger.LogInfo("removing existing oracles");
+                IteratorKit.Logger.LogInfo("ClearOracles(): removing existing oracles");
                 oracle.Destroy();
             }
             this.iteratorKit.oracleList.Clear();
@@ -85,12 +85,12 @@ namespace IteratorKit.Debug
 
         public void LoadNextOracle(RainWorldGame rainWorld)
         {
-            IteratorKit.Logger.LogWarning($"load next oracle file {this.currentTestIdx}");
+            IteratorKit.Logger.LogWarning($"LoadNextOracle(): load next oracle file {this.currentTestIdx}");
             this.ClearOracles();
             try
             {
                 this.iteratorKit.LoadOracleFile(this.testOracleFiles[this.currentTestIdx]);
-                IteratorKit.Logger.LogWarning("loaded oracle");
+                IteratorKit.Logger.LogWarning("LoadNextOracle(): loaded oracle");
                 testRoom.ReadyForAI(); // force oracle to spawn
             }catch(Exception e)
             {

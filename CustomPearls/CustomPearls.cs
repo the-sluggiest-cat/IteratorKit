@@ -17,7 +17,7 @@ namespace IteratorKit.CustomPearls
 
         public static void ApplyHooks()
         {
-            IteratorKit.Logger.LogInfo("Apply data pearl hooks");
+            IteratorKit.Logger.LogInfo("ApplyHooks(): Apply data pearl hooks");
             On.DataPearl.ApplyPalette += CustomPearlApplyPalette;
             On.Conversation.DataPearlToConversation += CustomPearlToConversation;
             On.SLOracleBehaviorHasMark.MoonConversation.AddEvents += SLConversation.CustomPearlAddEvents; // this includes pebbles reading pearls for dumb reasons
@@ -26,7 +26,7 @@ namespace IteratorKit.CustomPearls
         public static void LoadPearlData(List<DataPearlJson> dataPearls)
         {
             //CustomPearls.dataPearls = dataPearls;
-            IteratorKit.Logger.LogInfo("Register custom pearls");
+            IteratorKit.Logger.LogInfo("LoadPearlData(): Register custom pearls");
             customPearls.Clear();
             pearlJsonDict.Clear();
 
@@ -53,7 +53,7 @@ namespace IteratorKit.CustomPearls
                 }
                 else
                 {
-                    IteratorKit.Logger.LogError("Failed to apply pallete to pearl as it can not be found.");
+                    IteratorKit.Logger.LogError("CustomPearlApplyPalette(): Failed to apply pallete to pearl as it can not be found.");
                 }
                 
             }
@@ -69,12 +69,12 @@ namespace IteratorKit.CustomPearls
             {
                 if (CustomPearls.pearlJsonDict.TryGetValue(type, out DataPearlRelationStore pearlStore))
                 {
-                    IteratorKit.Logger.LogInfo($"Loading pearl convo for {pearlStore.convId}");
+                    IteratorKit.Logger.LogInfo($"CustomPearlToConversation(): Loading pearl convo for {pearlStore.convId}");
                     return pearlStore.convId;
                 }
                 else
                 {
-                    IteratorKit.Logger.LogError($"Failed to find conversation for pearl of type {type}");
+                    IteratorKit.Logger.LogError($"CustomPearlToConversation(): Failed to find conversation for pearl of type {type}");
                     return Conversation.ID.None;
                 }
             }

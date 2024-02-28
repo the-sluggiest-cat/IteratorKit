@@ -38,7 +38,12 @@ namespace IteratorKit.CMOracle
             // this.convBehav = convBehav;
             this.eventType = eventType;
             this.eventId = eventId;
-            this.oracleDialogJson = this.owner.oracle.OracleJson().events[owner.oracle.room.game.StoryCharacter.value];
+            OracleJSON oracleJson = this.owner.oracle.OracleJson();
+            if (oracleJson.events.ContainsKey(owner.oracle.room.game.StoryCharacter.value) == false) {
+              IteratorKit.Logger.LogError($"CMConversation(): ! - NO JSON FOUND FOR {owner.oracle.room.game.StoryCharacter.value} - !");
+              return;
+            }
+            this.oracleDialogJson = oracleJson.events[owner.oracle.room.game.StoryCharacter.value];
             this.pearlType = pearlType;
             this.AddEvents();
         }

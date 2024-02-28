@@ -25,7 +25,7 @@ namespace IteratorKit.Debug
         }
         public void EnableDebugUI(RainWorld rainWorld, IteratorKit iteratorKit)
         {
-            IteratorKit.Logger.LogWarning("enable debug ui");
+            IteratorKit.Logger.LogWarning("EnableDebugUI(): Enable debug ui");
             this.debugUIActive = true;
             this.iteratorKit = iteratorKit;
             fontParams.lineHeightOffset = 2f;
@@ -42,7 +42,7 @@ namespace IteratorKit.Debug
 
         public FLabel AddDebugLabel(RainWorld rainWorld, CMOracle.CMOracle oracle)
         {
-            FLabel debugLabel = new FLabel(Custom.GetFont(), "Loading debug ui...", fontParams);
+            FLabel debugLabel = new FLabel(Custom.GetFont(), "Loading debug UI...", fontParams);
             if (this.debugLabels.Count > 0)
             {
                 debugLabel.y = this.debugLabels.Last().Value.textRect.yMax - 10f;

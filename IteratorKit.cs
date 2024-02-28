@@ -254,10 +254,11 @@ namespace IteratorKit
                 
                 switch (oracleData.id)
                 { //todo: fix SL
-                    //case "SL":
+                    case "SL":
+                        IteratorKit.Logger.LogWarning("LoadOracleFile(): IF YOU SEE THIS, SL CONVOS DO NOT WORK YET. REMIND ME TO DO THIS LATER.");
                         //SLConversation slConvo = new SLConversation(oracleData, self.game.StoryCharacter);
                         //slConvo.ApplyHooks();
-                        //break;
+                        break;
                     case "SS": // includes DM
                         IteratorKit.Logger.LogInfo($"LoadOracleFile(): loading SS oracle data {file}");
                         SSOracleOverride.ssOracleJsonData.Add(oracleData);
