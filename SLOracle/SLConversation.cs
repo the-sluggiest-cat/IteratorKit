@@ -128,7 +128,7 @@ namespace IteratorKit.SLOracle
 
                 if (pearlJson != null)
                 {
-                    foreach (string text in pearlJson.getTexts((self.interfaceOwner as OracleBehavior).oracle.room.game.GetStorySession.saveStateNumber))
+                    foreach (string text in pearlJson.getTexts())
                     {
                         self.events.Add(new Conversation.TextEvent(self, pearlJson.delay, text, pearlJson.hold));
                     }
@@ -156,7 +156,7 @@ namespace IteratorKit.SLOracle
         private bool AddCustomEvents(SLOracleBehaviorHasMark.MoonConversation self, CMDialogType eventType, string eventId, OracleBehavior oracleBehavior)
         {
             IteratorKit.Logger.LogWarning($"Adding events for {eventType}: {eventId}");
-            List<OracleEventObjectJson> dialogList = this.oracleDialog.generic;
+            List<OracleEventObjectJson> dialogList = this.oracleDialog.generic; //todo: dynamically change to slugcat when available
 
             switch (eventType)
             {
@@ -180,15 +180,8 @@ namespace IteratorKit.SLOracle
             {
                 foreach (OracleEventObjectJson item in dialogData)
                 {
-                    if (item.forSlugcats != null)
-                    {
-                        if (item.forSlugcats.Count > 0 && !item.forSlugcats.Contains(oracleBehavior.oracle.room.game.GetStorySession.saveStateNumber))
-                        {
-                            continue; // skip as this one isnt for us
-                        }
-                    }
 
-                    foreach (string text in item.getTexts((self.interfaceOwner as OracleBehavior).oracle.room.game.GetStorySession.saveStateNumber))
+                    foreach (string text in item.getTexts())
                     {
                         self.events.Add(new Conversation.TextEvent(self, item.delay, text, item.hold));
                     }

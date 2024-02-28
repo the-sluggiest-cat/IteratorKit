@@ -38,7 +38,7 @@ namespace IteratorKit.CMOracle
             // this.convBehav = convBehav;
             this.eventType = eventType;
             this.eventId = eventId;
-            this.oracleDialogJson = this.owner.oracle.OracleJson().events;
+            this.oracleDialogJson = this.owner.oracle.OracleJson().events["Yellow"];
             this.pearlType = pearlType;
             this.AddEvents();
         }
@@ -47,7 +47,7 @@ namespace IteratorKit.CMOracle
         {
             // read this.id
             IteratorKit.Logger.LogInfo($"AddEvents(): Adding events for {this.eventId}");
-            List<OracleEventObjectJson> dialogList = this.oracleDialogJson[this.owner.oracle.room.game.StoryCharacter.value].generic;
+            List<OracleEventObjectJson> dialogList = this.oracleDialogJson.generic;
             
             switch (this.eventType)
             {
@@ -165,7 +165,7 @@ namespace IteratorKit.CMOracle
 
                 if (pearlJson != null)
                 {
-                    foreach (string text in pearlJson.getTexts((this.interfaceOwner as OracleBehavior).oracle.room.game.GetStorySession.saveStateNumber))
+                    foreach (string text in pearlJson.getTexts())
                     {
                         this.events.Add(new Conversation.TextEvent(this, pearlJson.delay, this.ReplaceParts(text), pearlJson.hold));
                     }
@@ -246,8 +246,8 @@ namespace IteratorKit.CMOracle
                 this.Destroy();
                 return;
             }
-            this.events[this.owner.oracle.room.game.StoryCharacter.value].Update();
-            if (this.events[this.owner.oracle.room.game.StoryCharacter.value].IsOver)
+            this.events[0].Update();
+            if (this.events[0].IsOver)
             {
                 this.events.RemoveAt(0);
             }

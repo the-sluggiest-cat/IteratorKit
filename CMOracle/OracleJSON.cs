@@ -131,7 +131,7 @@ namespace IteratorKit.CMOracle
         ///     "items": []
         /// }
         /// </example>
-        public List<OracleEventsJson> events = new List<OracleEventsJson>();
+        public Dictionary<string, OracleEventsJson> events = new Dictionary<string, OracleEventsJson>();
 
         /// <exclude/>
         public class OracleRoomEffectsJson
@@ -234,19 +234,12 @@ namespace IteratorKit.CMOracle
 
         //events -> slugcat ID -> generic/pearls/items
         
-        public class OracleEventsJson {
+        public class OracleEventsJson {             
+            
+            /// <summary>
+            /// Core events class See <see cref="OracleEventObjectJson"/> for how events work
+            /// </summary>
 
-            public List<OracleSlugcatsJson> slugcat = new Dictionary<string, OracleSlugcatsJson>();             
-        
-        }
-
-
-        /// <summary>
-        /// Core events class See <see cref="OracleEventObjectJson"/> for how events work
-        /// </summary>
-        public class OracleSlugcatsJson
-        {
-            public string id = null;
             /// <exclude/>
             public List<OracleEventObjectJson> generic = new List<OracleEventObjectJson>();
             /// <exclude/>
@@ -259,7 +252,6 @@ namespace IteratorKit.CMOracle
             /// </summary>
             public class OracleEventObjectJson
             {
-                private string id = OracleEventObjectJson.id;
 
                 /// <summary>
                 /// ID for this event <see href="/eventIds.html#custom-oracle-only-events"/>
@@ -479,6 +471,8 @@ namespace IteratorKit.CMOracle
             }
         }
 
+
+        
         /// <exclude />
         public class OverseerJson
         {
