@@ -38,7 +38,7 @@ namespace IteratorKit.CMOracle
             // this.convBehav = convBehav;
             this.eventType = eventType;
             this.eventId = eventId;
-            this.oracleDialogJson = this.owner.oracle.OracleJson().events["Yellow"];
+            this.oracleDialogJson = this.owner.oracle.OracleJson().events[owner.oracle.room.game.StoryCharacter.value];
             this.pearlType = pearlType;
             this.AddEvents();
         }
