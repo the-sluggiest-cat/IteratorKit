@@ -91,6 +91,7 @@ namespace IteratorKit.CMOracle
                     if (!((StoryGameSession)this.owner.oracle.room.game.session).saveState.deathPersistentSaveData.theMark)
                     {
                         // dont run any dialogs until we have given the player the mark.
+                        IteratorKit.Logger.LogInfo("AddEvents(): Not sending dialog, we don't have the mark yet.");
                         return;
                     }
 

@@ -186,7 +186,7 @@ namespace IteratorKit
                         IteratorKit.Logger.LogWarning("LoadOracleFiles(): hunting for atlases in " + mod.path + "/sprites");
                         foreach (string file in Directory.GetFiles(mod.path + "/sprites"))
                         {
-                            IteratorKit.Logger.LogInfo(file);
+                            IteratorKit.Logger.LogInfo($"LoadOracleFiles(): {file}");
                             
                             if (Path.GetFileName(file).StartsWith("oracle"))
                             {
@@ -253,11 +253,11 @@ namespace IteratorKit
             {
                 
                 switch (oracleData.id)
-                {
-                    case "SL":
-                        SLConversation slConvo = new SLConversation(oracleData);
-                        slConvo.ApplyHooks();
-                        break;
+                { //todo: fix SL
+                    //case "SL":
+                        //SLConversation slConvo = new SLConversation(oracleData, self.game.StoryCharacter);
+                        //slConvo.ApplyHooks();
+                        //break;
                     case "SS": // includes DM
                         IteratorKit.Logger.LogInfo($"LoadOracleFile(): loading SS oracle data {file}");
                         SSOracleOverride.ssOracleJsonData.Add(oracleData);

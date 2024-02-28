@@ -100,6 +100,7 @@ namespace IteratorKit.CMOracle
         /// <summary>
         /// Restricts what slugcats this oracle will spawn for
         /// </summary>
+        //todo: deprecate this in favor of using the event slugcats to spawn in the iterator rather than forSlugList
         [JsonProperty("for")]
         private List<String> forSlugList = null; // keeps compiler quiet; base has these just to default values and msbuild hates that
 

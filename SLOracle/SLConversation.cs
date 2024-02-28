@@ -36,9 +36,9 @@ namespace IteratorKit.SLOracle
 
         Conversation.ID customSlug = new Conversation.ID("customSlug", true);
 
-        public SLConversation(OracleJSON oracleJSON) {
+        public SLConversation(OracleJSON oracleJSON, string slugcat) {
             this.oracleJSON = oracleJSON;
-            this.oracleDialog = oracleJSON?.events[self.oracle.room.game.StoryCharacter.value];
+            this.oracleDialog = oracleJSON?.events[slugcat];
           //  SLConversation.LogAllActionsAndMovements();
         }
 

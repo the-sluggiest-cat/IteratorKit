@@ -293,13 +293,12 @@ namespace IteratorKit.CMOracle
             }
             
             if ((this.cmConversation != null && this.cmConversation.slatedForDeletion && this.action == CMOracleAction.generalIdle)) {
-              //todo: afterGiveMark -> playerConversation
-              //todo: alreadyHaveMark (todo) -> playerConversation
+              bool hasHadMainPlayerConvo = HasHadMainPlayerConversation();
               if (this.cmConversation.resumeConvFlag) // special case to resume conversation
                 {
                     this.cmConversation = this.conversationResumeTo;
                     this.conversationResumeTo = null;
-                } else if (this.cmConversation.eventId == "playerEnter" && !this.HasHadMainPlayerConversation())
+                } else if (this.cmConversation.eventId == "playerEnter" && hasHadMainPlayerConvo)
                 {
                     this.inspectItem = null;
                     IteratorKit.Logger.LogInfo("Update(): Starting main player conversation as it hasn't happened yet.");
@@ -313,9 +312,13 @@ namespace IteratorKit.CMOracle
                     {
                         SetHasHadMainPlayerConversation(true);
                     }
+                    if (this.cmConversation.eventId == "afterGiveMark" || this.cmConversation.eventId == "alreadyHasMark") {
+                        IteratorKit.Logger.LogInfo($"Update(): Found {this.cmConversation.eventId}");
+                        this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
+                    }
                     CMOracleBehavior.OnEventEnd?.Invoke(this, this.cmConversation?.eventId ?? "none");
                     this.inspectItem = null;
-                    this.cmConversation = null;
+                    if (this.cmConversation.eventId != "playerConversation" && hasHadMainPlayerConvo) {this.cmConversation = null;}
                     
                 }
                
@@ -566,8 +569,9 @@ namespace IteratorKit.CMOracle
                     {
                         this.oracle.room.game.cameras[0].EnterCutsceneMode(this.player.abstractCreature, RoomCamera.CameraCutsceneType.Oracle);
                         // now we can start calling player dialogs!
-                        IteratorKit.Logger.LogInfo($"CheckConversationEvents(): Has had main conversation? {HasHadMainPlayerConversation()}");
-                        if (!HasHadMainPlayerConversation() && (this.oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
+                        bool hasHadMainPlayerConvo = HasHadMainPlayerConversation();
+                        IteratorKit.Logger.LogInfo($"CheckConversationEvents(): Has had main conversation? {hasHadMainPlayerConvo}");
+                        if (!hasHadMainPlayerConvo && (this.oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
                         {
                             IteratorKit.Logger.LogInfo("CheckConversationEvents(): Starting main player conversation as it hasn't happened yet.");
                             this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
@@ -649,10 +653,10 @@ namespace IteratorKit.CMOracle
         {
             if (this.conversationResumeTo == null)
             {
-                IteratorKit.Logger.LogInfo("conversationResumeTo == null: No conversation to resume to.");
+                IteratorKit.Logger.LogInfo("ResumeConversation(): No conversation to resume to.");
                 return;
             }
-            IteratorKit.Logger.LogInfo($"conversationResumeTo: Resuming conversation {this.conversationResumeTo}");
+            IteratorKit.Logger.LogInfo($"ResumeConversation(): Resuming conversation {this.conversationResumeTo}");
             this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "conversationResume");
             this.cmConversation.resumeConvFlag = true; // when this is flagged for deletion, this flag will cause it to instead replace the conversation with conversationResumeTo
          
@@ -679,8 +683,10 @@ namespace IteratorKit.CMOracle
             SlugBaseSaveData saveData = SaveDataExtension.GetSlugBaseData(((StoryGameSession)this.oracle.room.game.session).saveState.miscWorldSaveData);
             if (!saveData.TryGet($"{this.oracle.ID}_hasHadPlayerConversation", out bool hasHadPlayerConversation))
             {
+                IteratorKit.Logger.LogInfo("HasHadMainPlayerConversation(): false");
                 return false;
             }
+            IteratorKit.Logger.LogInfo($"HasHadMainPlayerConversation(): {hasHadPlayerConversation}");
             return hasHadPlayerConversation;
         }
 
@@ -770,6 +776,7 @@ namespace IteratorKit.CMOracle
                     if (((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.theMark)
                     {
                         IteratorKit.Logger.LogWarning("CheckActions(): Player already has mark!");
+                        this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "alreadyHasMark");
                         this.action = CMOracleAction.generalIdle;
                         return;
                     }
