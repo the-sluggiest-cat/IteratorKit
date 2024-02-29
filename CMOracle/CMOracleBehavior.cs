@@ -62,6 +62,7 @@ namespace IteratorKit.CMOracle
         public bool oracleAngry = false;
         public bool oracleAnnoyed = false;
         public bool hasSaidByeToPlayer = false;
+        public bool hasHadMainPlayerConvo = false;
 
         private CMConversation actualConversationResumeTo;
         public CMConversation conversationResumeTo
@@ -230,7 +231,7 @@ namespace IteratorKit.CMOracle
 
             if (this.player != null)
             {
-                if (this.player.room == this.oracle.room && this.cmConversation == null && this.sayHelloDelay <= 0)
+                if (this.player.room == this.oracle.room && this.cmConversation == null && this.sayHelloDelay <= 0 && hasHadMainPlayerConvo)
                 {
                     List<PhysicalObject>[] physicalObjects = this.oracle.room.physicalObjects;
                     foreach (List<PhysicalObject> physicalObject in physicalObjects)
@@ -247,7 +248,7 @@ namespace IteratorKit.CMOracle
                                 continue;
                             }
 
-                            if (this.inspectItem == null && this.cmConversation == null)
+                            if (this.inspectItem == null && this.cmConversation == null && hasHadMainPlayerConvo)
                             {
                                 this.alreadyDiscussedItems.Add(physObject.abstractPhysicalObject);
                                 if (physObject is DataPearl)
@@ -300,7 +301,6 @@ namespace IteratorKit.CMOracle
             }
             
             if ((this.cmConversation != null && this.cmConversation.slatedForDeletion && this.action == CMOracleAction.generalIdle)) {
-              bool hasHadMainPlayerConvo = HasHadMainPlayerConversation();
               if (this.cmConversation.resumeConvFlag) // special case to resume conversation
                 {
                     this.cmConversation = this.conversationResumeTo;
@@ -318,14 +318,19 @@ namespace IteratorKit.CMOracle
                     if (this.cmConversation.eventId == "playerConversation")
                     {
                         SetHasHadMainPlayerConversation(true);
+                        this.hasHadMainPlayerConvo = true;
                     }
-                    if (this.cmConversation.eventId == "afterGiveMark" || this.cmConversation.eventId == "alreadyHasMark") {
-                        IteratorKit.Logger.LogInfo($"Update(): Found {this.cmConversation.eventId}");
-                        this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
-                    }
+                    
                     CMOracleBehavior.OnEventEnd?.Invoke(this, this.cmConversation?.eventId ?? "none");
                     this.inspectItem = null;
-                    if (this.cmConversation.eventId != "playerConversation" && hasHadMainPlayerConvo) {this.cmConversation = null;}
+                    string[] changeToPlayerConvo = {"afterGiveMark", "alreadyHasMark"};
+                    if (!changeToPlayerConvo.Contains(this.cmConversation.eventId)) {
+                        this.cmConversation = null;
+                    }
+                    if (this.cmConversation.eventId == "afterGiveMark" || this.cmConversation.eventId == "alreadyHasMark") {
+                        this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
+                    }
+
                     
                 }
                
@@ -581,7 +586,7 @@ namespace IteratorKit.CMOracle
                         if (!hasHadMainPlayerConvo && (this.oracle.room.game.session as StoryGameSession).saveState.deathPersistentSaveData.theMark)
                         {
                             IteratorKit.Logger.LogInfo("CheckConversationEvents(): Starting main player conversation as it hasn't happened yet.");
-                            this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
+                            this.cmConversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "alreadyHasMark");
                            
                         }
                         else
