@@ -28,9 +28,9 @@ namespace IteratorKit
     public class IteratorKit : BaseUnityPlugin
     {
         //todo: revamp logging so we aren't the most prevalent thing in there 
-        public const string PLUGIN_GUID = "slugcat.progtreatment";
-        public const string PLUGIN_NAME = "progtreatment";
-        public const string PLUGIN_DESC = "Heavily modified framework for creating and editing Iterator dialogue.<LINE> <LINE>For mod developers, please see the GitHub page: https://github.com/Twofour2/IteratorKit/.<LINE>Originally created by Twofour2.";
+        public const string PLUGIN_GUID = "slugcat.iteratorkit";
+        public const string PLUGIN_NAME = "IteratorKit";
+        public const string PLUGIN_DESC = "Heavily modified framework for creating and editing Iterator dialogue.<LINE> <LINE>For mod developers, please see the GitHub page: https://github.com/the-sluggiest-cat/IteratorKit/.<LINE>Originally created by Twofour2.";
         //BepInEx called 0.0a version invalid; so we're sticking with 0.0. fuck you too, Bep.
         public const string PLUGIN_VERSION = "0.0";
 
@@ -52,30 +52,19 @@ namespace IteratorKit
         private void OnEnable()
         {
             Logger = base.Logger;
-            //PT's hello world
-            Logger.LogInfo("...Hello, World? Is that how it goes?");
-            Logger.LogInfo("Regardless; OnEnable() has been hit. Here's what we're working with.");
-
-            Logger.LogInfo("SpawnOracle");
+            
             On.Room.ReadyForAI += SpawnOracle;
 
-            Logger.LogInfo("CMOracle.ApplyHooks");
             CMOracle.CMOracle.ApplyHooks();
-            Logger.LogInfo("CMOverseer.ApplyHooks");
             CMOverseer.ApplyHooks();
 
-            Logger.LogInfo("AfterModsInit");
             On.RainWorld.PostModsInit += AfterModsInit;
-            Logger.LogInfo("OnRestartGame");
             On.RainWorldGame.RestartGame += OnRestartGame;
             
             SlugBase.SaveData.SaveDataHooks.Apply();
-            Logger.LogInfo("RawUpdate");
             On.RainWorldGame.RawUpdate += RainWorldGame_RawUpdate;
-            Logger.LogInfo("Update (cooked)");
             On.ShortcutHandler.Update += InformOfInvalidShortcutError;
 
-            Logger.LogInfo("SSOracleOverride.ApplyHooks");
             SSOracleOverride.ApplyHooks();
         }
 
