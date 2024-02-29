@@ -12,9 +12,7 @@ This mod is a fork of IteratorKit, with modifications for more advanced movement
 - Create custom pearls with unique dialogs for each iterator
 
 **[Documentation](https://iteratorkit.twofour2.com/index.html)**
-
-(coming soon: PT docs)
-
+(coming soon: github wiki instead of this website for documentation)
 
 ~~**Verify**~~
 
