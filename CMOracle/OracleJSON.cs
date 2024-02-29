@@ -11,100 +11,30 @@ namespace IteratorKit.CMOracle
 {
     public class OracleJSON
     {
-        /// <summary>
-        /// Unique Identifier for your Iterator/Oracle. It's best you keep this under 5 characters
-        /// </summary>
-        /// <example>
-        ///    "id": "SRS"
-        /// </example>
         public string id;
-        /// <summary>
-        /// Room for your iterator to spawn in
-        /// </summary>
-        /// <example>
-        ///     "roomId": "SU_ai"
-        /// </example>
         public string roomId;
-        /// <exclude />
         public OracleBodyJson body = new OracleBodyJson();
-        /// <exclude />
         public float gravity;
-        /// <exclude />
         public float airFriction;
-        /// <summary>
-        /// Section for some basic room effects.
-        /// </summary>
-        /// <example>
-        ///     "roomEffects": {
-        ///         "swarmers": 15,
-        ///         "pearls": true
-        ///     },
-        /// </example>
         public OracleRoomEffectsJson roomEffects;
-        /// <summary>
-        /// Sets what score the iterator gets annoyed/angry at and triggers their respective events
-        /// </summary>
-        /// <example>
-        ///     "annoyedScore": 10,
-        ///     "angryScore": 0
-        /// </example>
         public int annoyedScore, angryScore;
-        /// <exclude />
         public float talkHeight = 250f;
-        /// <summary>
-        /// Default/Starting position using tile coordinates
-        /// </summary>
-        /// <example>
-        ///     "startPos": {"x": 15, "y": 15}
-        /// </example>
         public Vector2 startPos = Vector2.zero;
-        /// <summary>
-        /// Used when no pearl dialog is found
-        /// </summary>
-        /// <example>
-        ///     "pearlFallback": "pebbles"
-        /// </example>
         public string pearlFallback = null;
-
-        /// <summary>
-        /// List of tile positions for the arm to consider the corners of the room
-        /// </summary>
-        /// <example>
-        /// "cornerPositions": [
-        ///        {"x": 9,"y": 32},
-        ///        {"x": 38,"y": 32},
-        ///        {"x": 38,"y": 3},
-        ///        {"x": 10,"y": 3}
-        ///     ]
-        /// </example>
         public List<OracleJsonTilePos> cornerPositions = new List<OracleJsonTilePos>();
-
-        /// <exclude />
         public OverseerJson overseers;
-        /// <summary>
-        /// Sets the default dialog text color
-        /// </summary>
-        /// <example>
-        ///     "dialogColor": {"r": 255, "g": 0, "b": 0, "a": 255}
-        /// </example>
         public UnityEngine.Color dialogColor = Color.white;
 
-        /// <exclude />
         public enum OracleType
         {
             normal, sitting
         }
-        /// <exclude />
         public OracleType type;
     
-        /// <summary>
-        /// Restricts what slugcats this oracle will spawn for
-        /// </summary>
         //todo: deprecate this in favor of using the event slugcats to spawn in the iterator rather than forSlugList
         [JsonProperty("for")]
         private List<String> forSlugList = null; // keeps compiler quiet; base has these just to default values and msbuild hates that
 
-        /// <exclude />
         public List<SlugcatStats.Name> forSlugcats
         {
             get
@@ -122,48 +52,30 @@ namespace IteratorKit.CMOracle
             }
         }
 
-        /// <summary>
-        /// Main events section, contains "generic", "pearls" and "items" sections
-        /// </summary>
-        /// <example>
-        /// "events": {
-        ///     "generic": [],
-        ///     "pearls": [],
-        ///     "items": []
-        /// }
-        /// </example>
+        //OracleJSON -> slugcat name: OracleEventsJson -> generic/pearls/items: OracleEventObjectJson
         public Dictionary<string, OracleEventsJson> events = new Dictionary<string, OracleEventsJson>();
 
-        /// <exclude/>
         public class OracleRoomEffectsJson
         {
             public int swarmers = 0;
             public string pearls = null;
         }
 
-        /// <exclude/>
         public class OracleArmJson
         {
             public SpriteDataJson armColor = new SpriteDataJson();
             public SpriteDataJson armHighlight = new SpriteDataJson();
         }
 
-        /// <summary>
-        /// General options provided for any sprites. Some options may not always be avalible
-        /// </summary>
         public class SpriteDataJson
         {
+          //242: 
             // generic, used for a lot of things
             // values are not always used, usually just used for colors
             public float r, g, b = 0f;
 
             public float a { get; set; } = 255f;
 
-            /// <summary>
-            /// Specifies the name of the sprite to pass along to the Futile asset loader.
-            /// <see href="/iterators.html#sigil"/>
-            /// Press "6" with the dev tools open to dump all of the sprites loaded to the console
-            /// </summary>
             public string sprite;
             public string shader;
 
@@ -178,36 +90,15 @@ namespace IteratorKit.CMOracle
         public class OracleBodyJson
         {
             public SpriteDataJson oracleColor, eyes, head, torso, arms, hands, legs, feet, chin, neck = new SpriteDataJson();
-            /// <summary>
-            /// <see href="http://localhost:8080/iterators.html#sigil"/>
-            /// </summary>
             public SpriteDataJson sigil = null;
             public OracleGownJson gown = new OracleGownJson();
-            /// <summary>
-            /// <see href="http://localhost:8080/iterators.html#halos"/>
-            /// </summary>
             public OracleHaloJson halo = null;
-
-            /// <summary>
-            /// Arm connecting iterator to the wall
-            /// </summary>
-            /// <example>
-            /// "arm": {
-            ///    "armColor": {"r": 255, "g": 0, "b": 0},
-            ///    "armHighlight": {"r": 255, "g": 0, "b": 0}
-            /// }
-            /// </example>
             public OracleArmJson arm = null; 
 
             public class OracleGownJson
             {
                 public OracleGownColorDataJson color = new OracleGownColorDataJson();
 
-                /// <summary>
-                /// Must specify a type of either "solid" or "gradient".
-                /// Solid uses rgba values
-                /// Gradient uses "from" and "to" using hsl
-                /// </summary>
                 public class OracleGownColorDataJson
                 {
                     
@@ -218,7 +109,7 @@ namespace IteratorKit.CMOracle
                     public OracleGradientDataJson to;
                 }
 
-                /// <exclude/>
+                //this only matters if type is gradient vs solid
                 public class OracleGradientDataJson
                 {
                     public float h, s, l = 0f;
@@ -232,31 +123,16 @@ namespace IteratorKit.CMOracle
             }
             
         }
-
-        //events -> slugcat ID -> generic/pearls/items
         
         public class OracleEventsJson {             
             
-            /// <summary>
-            /// Core events class See <see cref="OracleEventObjectJson"/> for how events work
-            /// </summary>
-
-            /// <exclude/>
             public List<OracleEventObjectJson> generic = new List<OracleEventObjectJson>();
-            /// <exclude/>
             public List<OracleEventObjectJson> pearls = new List<OracleEventObjectJson>();
-            /// <exclude/>
             public List<OracleEventObjectJson> items = new List<OracleEventObjectJson>();
 
-            /// <summary>
-            /// See the events docs for this: <see href="/events.html">Events</see>
-            /// </summary>
             public class OracleEventObjectJson
             {
 
-                /// <summary>
-                /// ID for this event <see href="/eventIds.html#custom-oracle-only-events"/>
-                /// </summary>
                 [JsonProperty("event")]
                 public string eventId;
 
@@ -267,42 +143,9 @@ namespace IteratorKit.CMOracle
                     get { return this.eventId; }
                 }
 
-                /// <summary>
-                /// List of slugcats that this event will play for.
-                /// The built in slug cats are: White(Survivor), Yellow(Monk), Red(Hunter)
-                /// Downpour DLC: Rivulet, Artificer, Saint, Spear, Gourmand, Slugpup, Inv
-                /// </summary>
-                /// <example>
-                // "for": ["Yellow", "Spear"]
-                /// </example>
-                //[JsonProperty("for")]
-                //private List<String> forSlugList = null; // same as past reference
-
-                /// <summary>
-                /// <see href="/eventsIds.html#dialog-creatures"/>
-                /// </summary>
                 [JsonProperty("creatures")]
                 private List<String> creaturesInRoomList = null;
 
-                /// <exclude/>
-                //public List<SlugcatStats.Name> forSlugcats
-                //{
-                //    get
-                //    {
-                //        List<SlugcatStats.Name> nameList = new List<SlugcatStats.Name>();
-                //        if (this.forSlugList == null || this.forSlugList?.Count <= 0)
-                //        {
-                //            return nameList;
-                //        } 
-                //        foreach (string slugcatName in this.forSlugList)
-                //        {
-                //            nameList.Add(new SlugcatStats.Name(slugcatName, false));
-                //        }
-                //        return nameList;
-                //    }
-                //}
-
-                /// <exclude/>
                 public List<CreatureTemplate.Type> creaturesInRoom
                 {
                     get
@@ -339,7 +182,6 @@ namespace IteratorKit.CMOracle
                     }
                 }
 
-                /// <exclude/>
                 public List<string> getTexts()
                 {
                     
@@ -356,96 +198,31 @@ namespace IteratorKit.CMOracle
 
                 }
 
-
-                /// <summary>
-                /// Delay and hold times
-                /// </summary>
-                /// <example>
-                /// "delay": 5,
-                /// "hold": 15
-                /// </example>
                 public int delay, hold = 10;
 
-                /// <summary>
-                /// Used for just one dialog box
-                /// </summary>
-                /// <example>
-                /// "text": "This is dialog 1"
-                /// </example>
                 public string text = null;
-
-                /// <summary>
-                /// Plays a list of dialogs in order. Unless random mode is enabled.
-                /// </summary>
-                /// <example>
-                /// "texts": ["This is dialog 1", "This is dialog 2"]
-                /// </example>
                 public List<string> texts;
+                
                 //i have zero clue what below does. later me; explain?
-                /// <exclude/>
+                //later me here: i still have no idea. doesn't seem fundamental to the oracle speaking. later /later/ me, explain?
+                
                 public string translateString = null;
-                /// <summary>
-                /// Pick one dialog randomly instead of reading them in order
-                /// </summary>
-                /// <example>
-                /// "random": true
-                /// </example>
+                
                 public bool random = false;
-                /// <summary>
-                /// Sets the gravity value for the current room, usually only 1 or 0. You need to add a ZeroG effect to the room for this to work.
-                /// </summary>
-                /// <example>
-                /// "gravity": 0
-                /// </example>
                 public float gravity = -50f; // -50f default value keeps gravity at whatever it already is
-                /// <summary>
-                /// Plays a sound using rainworlds audio name
-                /// </summary>
-                /// <example>
-                /// "sound": "SS_AI_Exit_Work_Mode"
-                /// </example>
                 public string sound; // links to SoundID
-
-                /// <summary>
-                /// Force iterator to move to this position at the start of this event. Uses world coordinates
-                /// </summary>
-                /// <example>
-                /// "moveTo": {"x": 241, "y": 244}
-                /// </example>
                 public Vector2 moveTo;
-
-                /// <summary>
-                /// <see href="/eventIds.html#actions"/>
-                /// </summary>
                 public string action;
-                /// <summary>
-                /// Used with action to specify some additional details <see href="/events.html#action-param"/>
-                /// </summary>
-                /// <example>
-                /// "action": "kickPlayerOut",
-                /// "actionParam": "SU_test"
-                ///</example>
                 public string actionParam;
 
                 public ChangePlayerScoreJson score;
 
-                /// <summary>
-                /// Dialog text color
-                /// </summary>
-                /// <example>
-                /// "color": {"r": 255, "g": 0, "b": 0, "a": 0}
-                /// </example>
                 public UnityEngine.Color color = UnityEngine.Color.white;
 
-                /// <summary>
-                /// <see href="/eventIds.html#movements"/>
-                /// </summary>
                 public string movement;
                 public int pauseFrames = 0; // only for pebbles
-
-                /// <summary>
-                /// Projection screens <see href="/events.html#screens"/>
-                /// </summary>
+                //todo: ^ for custom oracles
+                
                 public List<OracleScreenJson> screens = new List<OracleScreenJson>();
 
 
@@ -461,20 +238,11 @@ namespace IteratorKit.CMOracle
 
             public class ChangePlayerScoreJson
             {
-                /// <summary>
-                /// set, add or subtract
-                /// </summary>
                 public string action; // set, add, subtract
-                /// <summary>
-                /// Value to change to/by
-                /// </summary>
                 public int amount;
             }
         }
 
-
-        
-        /// <exclude />
         public class OverseerJson
         {
             public SpriteDataJson color;
