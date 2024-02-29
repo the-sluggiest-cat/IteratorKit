@@ -217,6 +217,8 @@ namespace IteratorKit.CMOracle
 
         public string Translate(string s)
         {
+            //the quest to find the purpose behind OracleJSON.OracleEventsJson.translateString continues
+            //fascinatingly, although this.owner is a CMOracleBehavior, there's no function for Translate()
             return this.owner.Translate(s);
         }
 

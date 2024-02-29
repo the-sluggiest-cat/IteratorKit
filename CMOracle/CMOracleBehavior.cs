@@ -198,6 +198,13 @@ namespace IteratorKit.CMOracle
                 this.playerOutOfRoomCounter++;
             }
 
+            //check for if slugcat has json entry
+            Dictionary<string, OracleJSON.OracleEventsJson> oracleJson = this.oracle.GetOracleData().oracleJson.events;
+            if (!oracleJson.ContainsKey(this.oracle.room.game.StoryCharacter.value)) {
+                //there is no entry; bail
+                return;
+            }
+
             
 
             if (this.inspectItem != null && this.cmConversation == null)
@@ -298,7 +305,7 @@ namespace IteratorKit.CMOracle
                 {
                     this.cmConversation = this.conversationResumeTo;
                     this.conversationResumeTo = null;
-                } else if (this.cmConversation.eventId == "playerEnter" && hasHadMainPlayerConvo)
+                } else if (this.cmConversation.eventId == "playerEnter" && !hasHadMainPlayerConvo)
                 {
                     this.inspectItem = null;
                     IteratorKit.Logger.LogInfo("Update(): Starting main player conversation as it hasn't happened yet.");
