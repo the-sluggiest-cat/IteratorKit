@@ -1,4 +1,4 @@
-# Progressive Treatment
+# IteratorKit
 
 IteratorKit is a mod for Rain World that allows for easier building of new iterators and custom iterator dialogs.
 This mod is a fork of IteratorKit, with modifications for more advanced movement and events, familiar to the Iterators already in the game.
